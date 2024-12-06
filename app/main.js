@@ -8,12 +8,12 @@ console.log("Logs from your program will appear here!");
     socket.on("data",(data)=>{
         const request = data.toString().split("\r\n")
         const requestTarget = request[0].split(" ")[1]
-        const userAgent = request[3].split(" ")[1]
+        const userAgent = request[2].split(" ")[1]
         if(requestTarget ==="/"){
             socket.write("HTTP/1.1 200 OK\r\n\r\n")}
         else if(requestTarget.startsWith("/echo")){
-                const echoString = requestTarget.slice(6)
-                socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${echoString.length}\r\n\r\n${echoString}`)}
+            const echoString = requestTarget.slice(6)
+            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${echoString.length}\r\n\r\n${echoString}`)}
         else if(requestTarget.startsWith("/user-agent")){
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`)}
         else{
