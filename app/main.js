@@ -13,38 +13,33 @@ const directory = args[1]
         const requestTarget = request[0].split(" ")[1]
         const userAgent = request[2].split(" ")[1]
         const method = request[0].split(" ")[0]
-        if ( method === 'GET'){
-            if(requestTarget ==="/"){
-                socket.write("HTTP/1.1 200 OK\r\n\r\n")}
-            else if(requestTarget.startsWith("/echo")){
-                const echoString = requestTarget.slice(6)
-                socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${echoString.length}\r\n\r\n${echoString}`)}
-            else if(requestTarget.startsWith("/user-agent")){
-                socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`)}
-            else if(requestTarget.startsWith("/files")){
-                const filename = requestTarget.split('/files/')[1]
-                if(file.existsSync(`${directory}${filename}`)){
-                    const data = file.readFileSync(`${directory}${filename}`)
-                    const size = file.statSync(`${directory}${filename}`).size
-                    socket.write(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${size}\r\n\r\n${data.toString()}`)
-                }
-                else{
-                    socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
-                }
+        if(requestTarget ==="/"){
+            socket.write("HTTP/1.1 200 OK\r\n\r\n")}
+        else if(requestTarget.startsWith("/echo")){
+            const echoString = requestTarget.slice(6)
+            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${echoString.length}\r\n\r\n${echoString}`)}
+        else if(requestTarget.startsWith("/user-agent")){
+            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`)}
+        else if(requestTarget.startsWith("/files" && method==='GET')){
+            const filename = requestTarget.split('/files/')[1]
+            if(file.existsSync(`${directory}${filename}`)){
+                const data = file.readFileSync(`${directory}${filename}`)
+                const size = file.statSync(`${directory}${filename}`).size
+                socket.write(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${size}\r\n\r\n${data.toString()}`)
             }
             else{
-                socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+                socket.write("HTTP/1.1 404 Not Found\r\n\r\n")
             }
+        }
+        else if(requestTarget.startsWith("/files") && method ==='POST'){
+            const filename = requestTarget.split('/files/')[1]
+            const data = request[7]
+            file.writeFileSync(`${directory}${filename}`,data.toString())
+            socket.write("HTTP/1.1 201 Created\r\n\r\n")
         }
         else{
-            if(requestTarget.startsWith("/files")){
-                const filename = requestTarget.split('/files/')[1]
-                const data = request[2].split(" ")[1]
-                file.writeFileSync(`${directory}${filename}`,data.toString())
-                socket.write("HTTP/1.1 201 Created\r\n\r\n")
-            }
+            socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
         }
-        
     })
    socket.on("close", () => {
      socket.end();
