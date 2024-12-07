@@ -21,9 +21,9 @@ const directory = args[1]
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`)}
         else if(requestTarget.startsWith("/files")){
             const filename = requestTarget.split('/files/')[1]
-            const size = file.statSync(`${directory}${filename}`).size
             if(file.existsSync(`${directory}${filename}`)){
                 const data = file.readFileSync(`${directory}${filename}`)
+                const size = file.statSync(`${directory}${filename}`).size
                 socket.write(`HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${size}\r\n\r\n${data.toString()}`)
             }
             else{
