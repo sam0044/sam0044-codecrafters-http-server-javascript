@@ -39,7 +39,7 @@ const directory = args[1]
         else{
             if(requestTarget.startsWith("/files")){
                 const filename = requestTarget.split('/files/')[1]
-                const data = request[2]
+                const data = request[2].split(" ")[1]
                 file.writeFileSync(`${directory}${filename}`,data)
                 socket.write("HTTP/1.1 201 Created\r\n\r\n")
             }
