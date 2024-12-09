@@ -20,7 +20,7 @@ const directory = args[1]
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${echoString.length}\r\n\r\n${echoString}`)}
         else if(requestTarget.startsWith("/user-agent")){
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`)}
-        else if(requestTarget.startsWith("/files" && method==='GET')){
+        else if(requestTarget.startsWith("/files") && method==='GET'){
             const filename = requestTarget.split('/files/')[1]
             if(file.existsSync(`${directory}${filename}`)){
                 const data = file.readFileSync(`${directory}${filename}`)
