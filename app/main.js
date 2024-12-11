@@ -12,10 +12,15 @@ const not_found_code = "HTTP/1.1 404 Not Found"
     socket.on("data",(data)=>{
         const request = data.toString().split("\r\n")
         const requestTarget = request[0].split(" ")[1]
-        const encoding = request[4].split(" ")[1]
-        console.log(request)
-        console.log(encoding)
-        const userAgent = request[2].split(" ")[1]
+        const headers = {}
+        let i =1
+        while(i<request.length && request[i]!==''){
+            const [key,value]=request[i].split(': ')
+            headers[key.toLowerCase()] = value
+            i++
+        }
+        const encoding = headers['accept-encoding']
+        const userAgent = headers['user-agent']
         const method = request[0].split(" ")[0]
         if(requestTarget ==="/"){
             socket.write(`${ok_code}\r\n\r\n`)}
