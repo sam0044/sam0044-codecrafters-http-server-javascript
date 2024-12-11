@@ -50,7 +50,7 @@ const routeHandlers = {
             socket.write(`${HTTP_CODE.OK}\r\nContent-Type: application/octet-stream\r\nContent-Length: ${size}\r\n\r\n${data.toString()}`)
         }
         else{
-            file.writeFileSync(filePath, request[-1])
+            file.writeFileSync(filePath, request[request.length-1])
             socket.write(`${HTTP_CODE.CREATED}\r\n\r\n`)
         }
     }
