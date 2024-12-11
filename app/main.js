@@ -19,16 +19,18 @@ const not_found_code = "HTTP/1.1 404 Not Found"
             headers[key.toLowerCase()] = value
             i++
         }
-        const encoding_list = headers['accept-encoding'].split(", ")
-        const trimmed_list = encoding_list.map(item=>item.trim())
         const userAgent = headers['user-agent']
         const method = request[0].split(" ")[0]
         if(requestTarget ==="/"){
             socket.write(`${ok_code}\r\n\r\n`)}
         else if(requestTarget.startsWith("/echo")){
             const echoString = requestTarget.slice(6)
-            if (trimmed_list.includes("gzip")){
-                socket.write(`${ok_code}\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${echoString.length}\r\n\r\n${echoString}`)
+            if (headers.hasOwnProperty('accept-encoding')){
+                const encoding_list = headers['accept-encoding'].split(", ")
+                const trimmed_list = encoding_list.map(item=>item.trim())
+                if(trimmed_list.includes('gzip')){
+                    socket.write(`${ok_code}\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${echoString.length}\r\n\r\n${echoString}`)
+                }
             }
             else{
                 socket.write(`${ok_code}\r\nContent-Type: text/plain\r\nContent-Length: ${echoString.length}\r\n\r\n${echoString}`)}
