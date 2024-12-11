@@ -20,7 +20,7 @@ const directory = args[1]
 
 const routeHandlers = {
     async handleRoot(socket){
-        socket.write(`${HTTP_CODES.OK}\r\n\r\n`)}
+        socket.write(`${HTTP_CODE.OK}\r\n\r\n`)}
     ,
 
     async handleEcho(socket,headers,requestTarget){
