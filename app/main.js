@@ -75,7 +75,7 @@ const routeHandlers = {
           } else if (requestTarget.startsWith("/echo")) {
             routeHandlers.handleEcho(socket,headers,requestTarget);
           } else if (requestTarget.startsWith("/user-agent")) {
-            routeHandlers.handleUserAgent(socket, headers);
+            routeHandlers.handleAgent(socket, headers);
           } else if (requestTarget.startsWith("/files")) {
             routeHandlers.handleFiles(socket, method, request, directory);
           } else {
