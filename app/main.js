@@ -37,7 +37,8 @@ const routeHandlers = {
         const userAgent = headers['user-agent']
         socket.write(`${HTTP_CODE.OK}\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`)
     },
-    async handleFiles(socket,method,requestTarget,directory){
+    async handleFiles(socket,method,request,directory){
+        const requestTarget = request[0].split(" ")[1]
         const filename = requestTarget.split('/files/')[1]
         const filePath = `${directory}${filename}`
         if (method ==="GET"){
@@ -76,7 +77,7 @@ const routeHandlers = {
           } else if (requestTarget.startsWith("/user-agent")) {
             routeHandlers.handleUserAgent(socket, headers);
           } else if (requestTarget.startsWith("/files")) {
-            routeHandlers.handleFiles(socket, method, requestTarget, directory);
+            routeHandlers.handleFiles(socket, method, request, directory);
           } else {
             socket.write(`${HTTP_CODE.NOT_FOUND}\r\n\r\n`);
           }
