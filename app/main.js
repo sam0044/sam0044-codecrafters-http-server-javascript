@@ -13,6 +13,8 @@ const not_found_code = "HTTP/1.1 404 Not Found"
         const request = data.toString().split("\r\n")
         const requestTarget = request[0].split(" ")[1]
         const encoding = request[4].split(" ")[1]
+        console.log(request)
+        console.log(encoding)
         const userAgent = request[2].split(" ")[1]
         const method = request[0].split(" ")[0]
         if(requestTarget ==="/"){
