@@ -11,9 +11,7 @@ const not_found_code = "HTTP/1.1 404 Not Found"
  const server = net.createServer((socket) => {
     socket.on("data",(data)=>{
         const request = data.toString().split("\r\n")
-        console.log(request)
         const requestTarget = request[0].split(" ")[1]
-        console.log(requestTarget)
         const encoding = request[4].split(" ")[1]
         const userAgent = request[2].split(" ")[1]
         const method = request[0].split(" ")[0]
