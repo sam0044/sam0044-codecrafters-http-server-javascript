@@ -19,7 +19,7 @@ const not_found_code = "HTTP/1.1 404 Not Found"
             headers[key.toLowerCase()] = value
             i++
         }
-        const encoding_list = headers['accept-encoding'].split(" ")
+        const encoding_list = headers['accept-encoding'].split(", ")
         const trimmed_list = encoding_list.map(item=>item.trim())
         const userAgent = headers['user-agent']
         const method = request[0].split(" ")[0]
